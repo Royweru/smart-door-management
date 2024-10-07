@@ -17,7 +17,10 @@ const config: Config = {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+		fontFamily:{
+			poppins:'var(--font-poppins)'
+		}
   	}
   },
   plugins: [require("tailwindcss-animate")],
