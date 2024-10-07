@@ -2,6 +2,7 @@
 import { getCodeByEmail } from "@/data/getVerficationCode";
 import db from "@/lib/prisma";
 
+
 const generateCode = () => {
   const code = Array.from(
     { length: 6 },
@@ -10,7 +11,11 @@ const generateCode = () => {
   return code;
 };
 
-export const newCodeGenerate = async (email: string) => {
+export type CodeType={
+  verificationCode:string,
+  expiry:Date
+}|null
+export const newCodeGenerate = async (email: string):Promise<CodeType> => {
   try {
     const expires = new Date();
     expires.setMinutes(expires.getMinutes() + 5);
