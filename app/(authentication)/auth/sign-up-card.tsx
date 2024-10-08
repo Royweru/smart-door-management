@@ -1,7 +1,7 @@
 "use client";
 
 import * as z from "zod";
-import React from "react";
+import React, { useState, useTransition } from "react";
 
 import { AuthFlow } from "../types";
 import {
@@ -23,30 +23,44 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { Register } from "@/actions/register";
+import { ErrorSec } from "./error-sec";
+import { Success } from "./success";
 
 export const SignUpCard = ({
   setState,
 }: {
   setState: (state: AuthFlow) => void;
 }) => {
+  const [isPending, startTransistion] = useTransition();
+  const [err, setErr] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
   const form = useForm<z.infer<typeof SignupSchema>>({
     resolver: zodResolver(SignupSchema),
     defaultValues: {
-        name:"",
+      name: "",
       email: "",
       password: "",
     },
   });
   const handleSubmit = (vals: z.infer<typeof SignupSchema>) => {
-    console.log(vals);
+    setErr("")
+    setSuccess("")
+    startTransistion(() => {
+      Register(vals).then((data) => {
+        setErr(data?.error);
+        setSuccess(data?.success);
+        form.reset()
+      });
+    });
   };
-  const isSubmitting = form.formState.isSubmitting;
+
   return (
     <Card className=" lg:w-[450px] md:w-[380px] sm:w-[320px] w-full sm:mx-0 mx-4">
       <CardContent>
         <CardHeader>
           <CardTitle className=" text-xl lg:text-2xl font-semibold text-maroon">
-           Sign Up
+            Sign Up
           </CardTitle>
           <CardDescription className=" tracking-wide">
             Register to smart door and be part of our users
@@ -68,9 +82,9 @@ export const SignUpCard = ({
                     </FormLabel>
                     <FormControl>
                       <Input
-                        type="email"
+                        type="text"
                         placeholder=" Enter your email.."
-                        disabled={isSubmitting}
+                        disabled={isPending}
                         {...field}
                       />
                     </FormControl>
@@ -89,7 +103,7 @@ export const SignUpCard = ({
                       <Input
                         type="email"
                         placeholder=" Enter your email.."
-                        disabled={isSubmitting}
+                        disabled={isPending}
                         {...field}
                       />
                     </FormControl>
@@ -108,30 +122,39 @@ export const SignUpCard = ({
                       <Input
                         type="password"
                         placeholder="*******"
-                        disabled={isSubmitting}
+                        disabled={isPending}
                         {...field}
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
+              <ErrorSec message={err} />
+              <Success message={success} />
               <div className=" w-full ">
-             <Button
-              className=" w-full font-semibold text-sm flex justify-start gap-x-2 items-center"
-              variant={"link"}
-             >
-                Already have an account 
-                <span className=" text-xs text-blue-600 hover:underline cursor-pointer"
-                onClick={()=>setState("signIn")}
+                <Button
+                  className=" w-full font-semibold text-sm flex justify-start gap-x-2 items-center"
+                  variant={"link"}
                 >
+                  Already have an account
+                  <span
+                    className=" text-xs text-blue-600  cursor-pointer"
+                    onClick={() => setState("signIn")}
+                  >
                     Login
-                </span>
-             </Button>
+                  </span>
+                </Button>
               </div>
               <div className=" w-full flex items-center justify-center">
-                 <Button type="submit" size={"lg"} variant={"secondary"} className=" text-red font-semibold">
-                   Sign Up
-                 </Button>
+                <Button
+                  type="submit"
+                  size={"lg"}
+                  variant={"secondary"}
+                  className=" text-red font-semibold"
+                  disabled={isPending}
+                >
+                  Sign Up
+                </Button>
               </div>
             </form>
           </Form>

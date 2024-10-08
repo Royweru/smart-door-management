@@ -1,10 +1,13 @@
 import { Landing } from "@/components/landing";
+import { serverUser } from "@/lib/serverUser";
 
 
-export default function Home() {
+export default async function Home() {
+
+  const user = await serverUser()
   return (
    <>
-    <Landing />
+    <Landing  user={user}/>
    </>
   );
 }

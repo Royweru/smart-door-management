@@ -1,7 +1,7 @@
 "use client";
 
 import * as z from "zod";
-import React from "react";
+import React, { useState, useTransition } from "react";
 
 import { AuthFlow } from "../types";
 import {
@@ -23,12 +23,17 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { ErrorSec } from "./error-sec";
+import { Login } from "@/actions/login";
 
 export const LoginCard = ({
   setState,
 }: {
   setState: (state: AuthFlow) => void;
 }) => {
+  const [isPending, startTransition] = useTransition();
+  const [err, setErr] = useState<string|undefined>("");
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -37,9 +42,17 @@ export const LoginCard = ({
     },
   });
   const handleSubmit = (vals: z.infer<typeof LoginSchema>) => {
-    console.log(vals);
+    setErr("")
+    startTransition(()=>{
+        Login(vals).
+        then((data)=>{
+            setErr(data?.error)
+            form.reset()
+            
+        })
+    })
   };
-  const isSubmitting = form.formState.isSubmitting;
+
   return (
     <Card className=" lg:w-[450px] md:w-[380px] sm:w-[320px] w-full sm:mx-0 mx-4">
       <CardContent>
@@ -69,7 +82,7 @@ export const LoginCard = ({
                       <Input
                         type="email"
                         placeholder=" Enter your email.."
-                        disabled={isSubmitting}
+                        disabled={isPending}
                         {...field}
                       />
                     </FormControl>
@@ -88,31 +101,36 @@ export const LoginCard = ({
                       <Input
                         type="password"
                         placeholder="*******"
-                        disabled={isSubmitting}
+                        disabled={isPending}
                         {...field}
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
+              <ErrorSec message={err}/>
               <div className=" w-full ">
-             <Button
-              className=" w-full font-semibold text-sm flex justify-start gap-x-2 items-center"
-              variant={"link"}
-             >
-                Don&apos;t have an account 
-                <span
-                 className=" text-xs text-blue-600 hover:underline cursor-pointer"
-                 onClick={()=>setState("signUp")}
-                 >
+                <Button
+                  className=" w-full font-semibold text-sm flex justify-start gap-x-2 items-center"
+                  variant={"link"}
+                >
+                  Don&apos;t have an account
+                  <span
+                    className=" text-xs text-blue-600 cursor-pointer"
+                    onClick={() => setState("signUp")}
+                  >
                     Sign up
-                </span>
-             </Button>
+                  </span>
+                </Button>
               </div>
               <div className=" w-full flex items-center justify-center">
-                 <Button type="submit" size={"lg"}>
-                    Login
-                 </Button>
+                <Button
+                 type="submit"
+                  size={"lg"}
+                  disabled={isPending}
+                  >
+                  Login
+                </Button>
               </div>
             </form>
           </Form>
