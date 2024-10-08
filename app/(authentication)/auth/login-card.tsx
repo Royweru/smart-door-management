@@ -32,7 +32,7 @@ export const LoginCard = ({
   setState: (state: AuthFlow) => void;
 }) => {
   const [isPending, startTransition] = useTransition();
-  const [err, setErr] = useState<string|undefined>("");
+  const [err, setErr] = useState<string | undefined>("");
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -42,15 +42,14 @@ export const LoginCard = ({
     },
   });
   const handleSubmit = (vals: z.infer<typeof LoginSchema>) => {
-    setErr("")
-    startTransition(()=>{
-        Login(vals).
-        then((data)=>{
-            setErr(data?.error)
-            form.reset()
-            
-        })
-    })
+    setErr("");
+    startTransition(() => {
+      Login(vals).then((data) => {
+        setErr(data?.error);
+        form.reset();
+        
+      });
+    });
   };
 
   return (
@@ -108,7 +107,7 @@ export const LoginCard = ({
                   </FormItem>
                 )}
               />
-              <ErrorSec message={err}/>
+              <ErrorSec message={err} />
               <div className=" w-full ">
                 <Button
                   className=" w-full font-semibold text-sm flex justify-start gap-x-2 items-center"
@@ -124,11 +123,7 @@ export const LoginCard = ({
                 </Button>
               </div>
               <div className=" w-full flex items-center justify-center">
-                <Button
-                 type="submit"
-                  size={"lg"}
-                  disabled={isPending}
-                  >
+                <Button type="submit" size={"lg"} disabled={isPending}>
                   Login
                 </Button>
               </div>
