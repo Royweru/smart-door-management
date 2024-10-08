@@ -11,7 +11,19 @@ const config: Config = {
   	extend: {
   		colors: {
   			background: 'var(--background)',
-  			foreground: 'var(--foreground)'
+  			foreground: 'var(--foreground)',
+			maroon:{
+				DEFAULT:"#780000"
+			},
+			red:{
+				DEFAULT:"#c1121f"
+			},
+			cream:{
+				DEFAULT:"#fdf0d5"
+			},
+			blue:{
+				DEFAULT:"#003049"
+			},
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
@@ -20,7 +32,8 @@ const config: Config = {
   		},
 		fontFamily:{
 			poppins:'var(--font-poppins)'
-		}
+		},
+		
   	}
   },
   plugins: [require("tailwindcss-animate")],

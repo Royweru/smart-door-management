@@ -1,8 +1,9 @@
 import React from 'react'
+import { AuthScreen } from './auth-screen'
 
 const AuthPage = () => {
   return (
-    <div>AuthPage</div>
+    <AuthScreen />
   )
 }
 
