@@ -1,5 +1,5 @@
 import { Landing } from "@/components/landing";
-import { UserProfile } from "@/components/user-profile";
+
 import { serverUser } from "@/lib/serverUser";
 
 

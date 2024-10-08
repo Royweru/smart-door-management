@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState, useTransition } from "react";
 import { Card, CardContent } from "./ui/card";
-import { Logout } from "@/actions/logout";
+
 import { User } from "@prisma/client";
 import { newCodeGenerate, CodeType } from "@/actions/generateVerificationCode";
 import { Button } from "./ui/button";
@@ -14,10 +14,6 @@ export const LandingCard = ({ user }: { user: User | null }) => {
   const [isPending, startTransition] = useTransition();
   const [copied, setCopied] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number>(0); // Time left for expiry in seconds
-
-  const onLogout = () => {
-    Logout();
-  };
 
   // Function to calculate time left for expiry
   const calculateTimeLeft = () => {
