@@ -25,6 +25,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ErrorSec } from "./error-sec";
 import { Login } from "@/actions/login";
+import { useRouter } from "next/navigation";
 
 export const LoginCard = ({
   setState,
@@ -33,6 +34,7 @@ export const LoginCard = ({
 }) => {
   const [isPending, startTransition] = useTransition();
   const [err, setErr] = useState<string | undefined>("");
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -47,7 +49,7 @@ export const LoginCard = ({
       Login(vals).then((data) => {
         setErr(data?.error);
         form.reset();
-        
+        router.refresh()
       });
     });
   };
@@ -113,9 +115,10 @@ export const LoginCard = ({
                   className=" w-full font-semibold text-sm flex justify-start gap-x-2 items-center"
                   variant={"link"}
                 >
+                  
                   Don&apos;t have an account
                   <span
-                    className=" text-xs text-blue-600 cursor-pointer"
+                    className=" text-xs text-blue-600 cursor-pointer hover:underline"
                     onClick={() => setState("signUp")}
                   >
                     Sign up
