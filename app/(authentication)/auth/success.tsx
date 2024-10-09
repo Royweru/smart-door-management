@@ -1,3 +1,4 @@
+"use client"
 import { CheckCircleIcon } from 'lucide-react'
 import React from 'react'
 

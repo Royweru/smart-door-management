@@ -51,6 +51,7 @@ export const SignUpCard = ({
         setErr(data?.error);
         setSuccess(data?.success);
         form.reset()
+        setState("signIn")
       });
     });
   };

@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react'
 import {TriangleAlert} from 'lucide-react'
 export const ErrorSec = ({
