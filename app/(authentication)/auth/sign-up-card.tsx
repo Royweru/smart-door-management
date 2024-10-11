@@ -32,7 +32,7 @@ export const SignUpCard = ({
 }: {
   setState: (state: AuthFlow) => void;
 }) => {
-  const [isPending, startTransistion] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const [err, setErr] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const form = useForm<z.infer<typeof SignupSchema>>({
@@ -46,7 +46,7 @@ export const SignUpCard = ({
   const handleSubmit = (vals: z.infer<typeof SignupSchema>) => {
     setErr("")
     setSuccess("")
-    startTransistion(() => {
+    startTransition(() => {
       Register(vals).then((data) => {
         setErr(data?.error);
         setSuccess(data?.success);
@@ -61,7 +61,7 @@ export const SignUpCard = ({
       <CardContent>
         <CardHeader>
           <CardTitle className=" text-xl lg:text-2xl font-semibold text-maroon">
-            Sign Up
+            Sign Up for smart door
           </CardTitle>
           <CardDescription className=" tracking-wide">
             Register to smart door and be part of our users
@@ -71,7 +71,7 @@ export const SignUpCard = ({
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleSubmit)}
-              className=" space-y-2"
+              className=" space-y-2 w-full"
             >
               <FormField
                 name="name"
@@ -84,7 +84,7 @@ export const SignUpCard = ({
                     <FormControl>
                       <Input
                         type="text"
-                        placeholder=" Enter your email.."
+                        placeholder="John doe.."
                         disabled={isPending}
                         {...field}
                       />
@@ -103,7 +103,7 @@ export const SignUpCard = ({
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder=" Enter your email.."
+                        placeholder="johndoe@gmail.com"
                         disabled={isPending}
                         {...field}
                       />
@@ -137,7 +137,7 @@ export const SignUpCard = ({
                   className=" w-full font-semibold text-sm flex justify-start gap-x-2 items-center"
                   variant={"link"}
                 >
-                  Already have an account
+                  Already have an account ?
                   <span
                     className=" text-xs text-blue-600  cursor-pointer"
                     onClick={() => setState("signIn")}

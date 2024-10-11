@@ -2,7 +2,6 @@
 
 import * as z from "zod";
 import React, { useState, useTransition } from "react";
-
 import { AuthFlow } from "../types";
 import {
   Card,
@@ -11,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { LoginSchema } from "@/schemas";
@@ -22,6 +22,7 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
+
 import { Button } from "@/components/ui/button";
 import { ErrorSec } from "./error-sec";
 import { Login } from "@/actions/login";
@@ -48,7 +49,7 @@ export const LoginCard = ({
     startTransition(() => {
       Login(vals).then((data) => {
         setErr(data?.error);
-        form.reset();
+        form.reset()
         router.refresh()
       });
     });
@@ -82,7 +83,7 @@ export const LoginCard = ({
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder=" Enter your email.."
+                        placeholder="Johndoe@gmail.com"
                         disabled={isPending}
                         {...field}
                       />
@@ -110,7 +111,7 @@ export const LoginCard = ({
                 )}
               />
               <ErrorSec message={err} />
-              <div className=" w-full ">
+              <div className=" w-full px-3">
                 <Button
                   className=" w-full font-semibold text-sm flex justify-start gap-x-2 items-center"
                   variant={"link"}
@@ -118,7 +119,7 @@ export const LoginCard = ({
                   
                   Don&apos;t have an account
                   <span
-                    className=" text-xs text-blue-600 cursor-pointer hover:underline"
+                    className=" text-xs text-blue-600 cursor-pointer "
                     onClick={() => setState("signUp")}
                   >
                     Sign up
@@ -126,7 +127,12 @@ export const LoginCard = ({
                 </Button>
               </div>
               <div className=" w-full flex items-center justify-center">
-                <Button type="submit" size={"lg"} disabled={isPending}>
+                <Button
+                 type="submit" 
+                 size={"lg"} 
+                 disabled={isPending}
+                 className=" font-semibold text-white"
+                 >
                   Login
                 </Button>
               </div>
