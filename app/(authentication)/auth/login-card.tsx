@@ -26,7 +26,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { ErrorSec } from "./error-sec";
 import { Login } from "@/actions/login";
-import { useRouter } from "next/navigation";
 
 export const LoginCard = ({
   setState,
@@ -35,7 +34,6 @@ export const LoginCard = ({
 }) => {
   const [isPending, startTransition] = useTransition();
   const [err, setErr] = useState<string | undefined>("");
-  const router = useRouter()
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -49,8 +47,10 @@ export const LoginCard = ({
     startTransition(() => {
       Login(vals).then((data) => {
         setErr(data?.error);
-        form.reset()
-        router.refresh()
+        form.reset();
+        if (!data?.error) {
+          window.location.reload();
+        }
       });
     });
   };
@@ -116,7 +116,6 @@ export const LoginCard = ({
                   className=" w-full font-semibold text-sm flex justify-start gap-x-2 items-center"
                   variant={"link"}
                 >
-                  
                   Don&apos;t have an account
                   <span
                     className=" text-xs text-blue-600 cursor-pointer "
@@ -128,11 +127,11 @@ export const LoginCard = ({
               </div>
               <div className=" w-full flex items-center justify-center">
                 <Button
-                 type="submit" 
-                 size={"lg"} 
-                 disabled={isPending}
-                 className=" font-semibold text-white"
-                 >
+                  type="submit"
+                  size={"lg"}
+                  disabled={isPending}
+                  className=" font-semibold text-white"
+                >
                   Login
                 </Button>
               </div>

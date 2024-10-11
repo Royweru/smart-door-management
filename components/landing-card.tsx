@@ -69,9 +69,12 @@ export const LandingCard = ({ user }: { user: User | null }) => {
       <CardContent className="bg-white rounded-xl shadow-md lg:w-[500px] md:w-[400px] sm:w-[350px] w-full sm:mx-0 mx-4">
         <div className="w-full p-2 space-y-3">
           <div className="text-center text-md">
-            <h3 className="font-semibold font-mono text-black text-xl">
-              Hey user, your special code is being generated
-            </h3>
+            {!specialCode && !isPending && (
+              <h3 className="font-semibold  tracking-wide text-purple-800 text-xl">
+                Hey {user?.name}, click on the generate button to get your
+                special code
+              </h3>
+            )}
           </div>
           {specialCode && !isPending && (
             <h2 className="lg:text-xl md:text-xl text-lg font-semibold text-center tracking-wide text-maroon">
