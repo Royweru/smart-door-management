@@ -1,59 +1,58 @@
-
-
+// prisma/schema.prisma
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // uncomment next line if you use Prisma <5.10
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 generator client {
   provider = "prisma-client-js"
 }
 
-enum UserRole{
+enum UserRole {
   ADMIN
   USER
 }
 
-model User{
-  id String@id @default(auto())@map("_id")@db.ObjectId
-  name String?
-  email String? @unique
-  emailVerified DateTime?
-  image String?
-  role UserRole @default(USER)
+model User {
+  id             String    @id @default(cuid())
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  image          String?
+  role           UserRole  @default(USER)
   hashedPassword String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  favouriteIds String[] @db.ObjectId
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
   accounts Account[]
 }
 
-model Account{
-  id String@id @default(auto())@map("_id")@db.ObjectId
-  userId String @db.ObjectId
-  type String
-  provider String
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
   providerAccountId String
-  refresh_token String? @db.String
-  access_token String? @db.String
-  expires_at Int?
-  token_type String?
-  scope String?
-  id_token String?
-  session_state String?
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
 
-  user User @relation(fields: [userId],references: [id], onDelete:Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider,providerAccountId])
+  @@unique([provider, providerAccountId])
 }
 
-
-model VerificationCode{
-  id String@id @default(auto())@map("_id")@db.ObjectId
-  email String 
-  code String @unique
+model VerificationCode {
+  id      String   @id @default(cuid())
+  email   String
+  code    String   @unique
   expires DateTime
-  
-  @@unique([email,code])
+
+  @@unique([email, code])
 }
